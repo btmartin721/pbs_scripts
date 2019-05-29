@@ -15,3 +15,8 @@ Also requires my HZAR_runSingle.R script located in my [R_scripts Repository](ht
 
 The file structure is intended for the Uark AHPCC machine, so you might have to mess around with script to suit your needs.  
 
+## bfd.pbs  
+
+This script runs Bayes Factor Delimitation (BFD*). You'll probably need to change the number of threads and queue information depending on your HPC machine.  
+
+There is a sed command to change BFD's root directory in the PBS script so you can use it for multiple runs easily.  

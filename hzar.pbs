@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#PBS -N hzar_BOX_rerun
+#PBS -q q72h32c
+#PBS -j oe
+#PBS -o hzar_BOX_rerun.$PBS_JOBID
+#PBS -m abe
+#PBS -M btm002@email.uark.edu
+#PBS -l nodes=1:ppn=32
+#PBS -l walltime=72:00:00
+
+module purge; module load mkl/18.0.1 R/3.4.3 parallel
+
+cd $PBS_O_WORKDIR
+
+LOCINAMES=BOX_HZAR_locinames.csv
+NSAMPLES=BOX_HZAR_nsamples.csv
+REFALLELE=FINAL_HZAR_DATA_refAlleles.csv
+DIST=FIANL_HZAR_DATA_distances.csv
+RSCRIPT=HZAR_runSingle.R
+OUTDIR=rerun_output
+
+mkdir -p /scratch/$PBS_JOBID/output
+
+maxLocus=`awk -F"," '{print NF}' $LOCINAMES`
+
+cp $LOCINAMES $NSAMPLES $REFALLELE $DIST $RSCRIPT /scratch/$PBS_JOBID/output
+cd /scratch/$PBS_JOBID/output
+
+parallel "Rscript --vanilla $RSCRIPT {} >loc{}.logfile.txt 2>&1" :::: <(seq 1 $maxLocus);
+
+mkdir -p $PBS_O_WORKDIR/$OUTDIR
+
+rsync -avh /scratch/$PBS_JOBID/output/* $PBS_O_WORKDIR/$OUTDIR
+

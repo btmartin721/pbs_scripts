@@ -21,4 +21,12 @@ This script runs Bayes Factor Delimitation (BFD*). You'll probably need to chang
 
 There is a sed command to change BFD's root directory XML file so you can use the same PBS script for multiple runs easily. But it assumes that the root option in the XML file is specified as "temp&". If the sed command doesn't find "temp&" it won't do anything.  
 
+## bfd_resume.pbs  
 
+This script resumes a BFD* run. It requires GNU parallel to work. GNU parallel runs multiple BFD threads in parallel. You may have to change the max number of threads where it says: <(seq 0 23).  
+
+You'll have to change the path to the resume.sh script in parallel command.  
+
+The script will fail if the user doesn't have execute permissions for resume.sh in all the step{} directories. For some reason user execute permissions are off by default with BFD.   
+
+The script will also fail if the likelihood.log files have recorded likelihoods at different frequencies than the other log files.  

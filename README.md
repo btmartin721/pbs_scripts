@@ -19,4 +19,6 @@ The file structure is intended for the Uark AHPCC machine, so you might have to 
 
 This script runs Bayes Factor Delimitation (BFD*). You'll probably need to change the number of threads and queue information depending on your HPC machine.  
 
-There is a sed command to change BFD's root directory in the PBS script so you can use it for multiple runs easily.  
+There is a sed command to change BFD's root directory XML file so you can use the same PBS script for multiple runs easily. But it assumes that the root option in the XML file is specified as "temp&". If the sed command doesn't find "temp&" it won't do anything.  
+
+

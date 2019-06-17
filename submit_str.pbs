@@ -1,0 +1,35 @@
+#!/bin/bash
+#PBS -N str_BOX_eastern_k3
+#PBS -q qcondo
+#PBS -j oe
+#PBS -m abe
+#PBS -M btm002@email.uark.edu
+#PBS -o str_BOX_eastern_k3.$PBS_JOBID
+#PBS -l nodes=1:ppn=8:m256gb
+#PBS -l walltime=30:00:00:00
+#PBS -V
+
+cd $PBS_O_WORKDIR
+
+infile=BOX_withPopmap_final.str
+mparams=mainparams
+eparams=extraparams
+outdir=eastern
+
+PATH=$PATH:/home/btm002/local/bin
+export PATH;
+
+cp $infile $mparams $eparams /scratch/$PBS_JOBID/
+
+cd /scratch/$PBS_JOBID
+
+mkdir ./$outdir
+cd ./$outdir
+
+/home/btm002/local/bin/parallel "/home/btm002/local/bin/structure -K 3 -D {}8825643 -m ../$mparams -e ../$eparams -i ../$infile -o k3_{}.out" :::: <(seq 1 8);
+
+mkdir -p $PBS_O_WORKDIR/$outdir
+
+rsync -vh /scratch/$PBS_JOBID/$outdir/*_f $PBS_O_WORKDIR/$outdir/
+rsync -vh /scratch/$PBS_JOBID/$outdir/seed.txt $PBS_O_WORKDIR/$outdir/seeds_k3.txt
+

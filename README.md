@@ -30,3 +30,7 @@ You'll have to change the path to the resume.sh script in parallel command.
 The script will fail if the user doesn't have execute permissions for resume.sh in all the step{} directories. For some reason user execute permissions are off by default with BFD.   
 
 The script will also fail if the likelihood.log files have recorded likelihoods at different frequencies than the other log files.  
+
+## submit_str.pbs
+
+Will need to modify the parameters in the script.  
